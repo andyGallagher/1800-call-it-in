@@ -1,0 +1,18 @@
+{
+    // These TypeScript options are inherited in all packages.
+    "compilerOptions": {
+        // We never use TSC to compile.
+        "noEmit": true,
+        // Always try to use the cache when type-checking.
+        "incremental": true,
+        // TypeScript recommends skipLibCheck these days, and it makes checking faster.
+        "skipLibCheck": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowUnusedLabels": false,
+        "noFallthroughCasesInSwitch": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true
+    }
+}

@@ -1,0 +1,47 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+    provider = "postgres"
+    url      = env("DATABASE_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+//##################################################################################################
+//##################################################################################################
+//##################################################################################################
+// INFRASTRUCTURE
+//
+// Things that are not really app data, but needed for infrastructure purposes
+//##################################################################################################
+//##################################################################################################
+//##################################################################################################
+/// The currently deployed version of the application. There should ever only be one row in this
+/// table.
+model ApplicationVersion {
+    // @superset-ignore
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+    /// The deployed tag, usually a git sha, but could be any identifier
+    deployTag String
+
+    /// Time the deploy finished, marks when the last pod successfully passed a health check.
+    /// Defaults to the time the row was created in the DB.
+    deployedAt DateTime @default(now())
+}
+
+enum TelephonyServiceType {
+    Vapi
+}
+
+model TelephoneCall {
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    externalServiceType TelephonyServiceType
+    externalServiceId String
+}

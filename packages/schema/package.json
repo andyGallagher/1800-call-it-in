@@ -1,0 +1,19 @@
+{
+    "private": true,
+    "name": "schema",
+    "scripts": {
+        "seed": "prisma db seed",
+        "migrate": "prisma migrate dev",
+        "reset": "pnpm prisma db push --force-reset"
+    },
+    "dependencies": {
+        "@prisma/client": "^6.2.1",
+        "prisma": "^6.2.1"
+    },
+    "prisma": {
+        "seed": "tsx prisma/seed.ts"
+    },
+    "devDependencies": {
+        "tsx": "^4.19.2"
+    }
+}
