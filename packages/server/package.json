@@ -1,12 +1,15 @@
 {
+    "private": true,
     "name": "server",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "dependencies": {
         "@vapi-ai/server-sdk": "^0.2.2",
-        "zod": "^3.24.1",
-        "schema": "workspace:*"
+        "dotenv": "^16.4.7",
+        "schema": "workspace:*",
+        "shared": "workspace:*",
+        "zod": "^3.24.1"
     },
     "devDependencies": {
         "tsx": "^4.19.2"

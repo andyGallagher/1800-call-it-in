@@ -1,0 +1,7 @@
+{
+    "private": true,
+    "name": "shared",
+    "dependencies": {
+        "dotenv": "^16.4.7"
+    }
+}
