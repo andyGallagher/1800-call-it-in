@@ -2,4 +2,7 @@
     "eslint.enable": true,
     "eslint.format.enable": false,
     "typescript.preferences.importModuleSpecifier": "non-relative",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": "explicit"
+    },
 }
