@@ -2,7 +2,7 @@
     "private": true,
     "name": "server",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "telephony": "tsx ./scripts/telephony.ts"
     },
     "dependencies": {
         "@vapi-ai/server-sdk": "^0.2.2",
