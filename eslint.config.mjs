@@ -1,7 +1,16 @@
 // @ts-check
 
-import tseslint from "typescript-eslint";
 import noRelativeImportPaths from "eslint-plugin-no-relative-import-paths";
+import tseslint from "typescript-eslint";
+
+// Restricted imports enforced in every package.
+const noRestrictedImportsPaths = [
+    {
+        name: "console",
+        importNames: ["assert"],
+        message: "Always import assert from 'shared/helpers'.",
+    },
+];
 
 export default tseslint.config(
     // NOTE: These configurations appear to extend one another in a top-down fashion.
@@ -76,6 +85,14 @@ export default tseslint.config(
             "@typescript-eslint/no-floating-promises": "error",
             "@typescript-eslint/switch-exhaustiveness-check": "error",
             "@typescript-eslint/only-throw-error": ["error"],
+
+            // Ban certain imports.
+            "no-restricted-imports": [
+                "error",
+                {
+                    paths: noRestrictedImportsPaths,
+                },
+            ],
 
             "no-restricted-properties": ["error"],
 
