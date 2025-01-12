@@ -33,10 +33,48 @@ model ApplicationVersion {
     deployedAt DateTime @default(now())
 }
 
+/**
+* Represents an item in a restaurant's menu.
+*/
+model MenuItem {
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name String
+    quantity Int
+    costPerItem Float?
+
+    orderId String @db.Uuid
+    order Order @relation(fields: [orderId], references: [id])
+}
+
+/**
+* Represents an order made by a customer.
+*/
+model Order {
+    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    // Note that this may diverge from a summation of MenuItem due to restaurant policy.
+    totalCost Float?
+    pickupTime DateTime?
+
+    restaurantName String
+    restaurantPhone String
+
+    orderItems MenuItem[]
+    telephoneCall TelephoneCall?
+}
+
 enum TelephonyServiceType {
     Vapi
 }
 
+/**
+* Represents a telephone call made to a telephony service.
+*/
 model TelephoneCall {
     id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     createdAt DateTime @default(now())
@@ -44,4 +82,7 @@ model TelephoneCall {
 
     externalServiceType TelephonyServiceType
     externalServiceId String
+
+    orderId String @unique @db.Uuid
+    order Order @relation(fields: [orderId], references: [id])
 }
