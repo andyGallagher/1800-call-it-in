@@ -4,11 +4,13 @@
     "scripts": {
         "seed": "prisma db seed",
         "migrate": "prisma migrate dev",
-        "reset": "pnpm prisma db push --force-reset"
+        "reset": "pnpm prisma db push --force-reset",
+        "generate": "prisma generate"
     },
     "dependencies": {
         "@prisma/client": "^6.2.1",
-        "prisma": "^6.2.1"
+        "prisma": "^6.2.1",
+        "prisma-zod-generator": "^0.8.13"
     },
     "prisma": {
         "seed": "tsx prisma/seed.ts"

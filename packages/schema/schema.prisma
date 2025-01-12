@@ -10,6 +10,16 @@ generator client {
     provider = "prisma-client-js"
 }
 
+/**
+* @see https://github.com/omar-dulaimi/prisma-zod-generator
+*/
+generator zod {
+    provider          = "prisma-zod-generator"
+    output            = "./src/generated-zod-schemas"
+    isGenerateSelect  = true
+    isGenerateInclude = true
+}
+
 //##################################################################################################
 //##################################################################################################
 //##################################################################################################
