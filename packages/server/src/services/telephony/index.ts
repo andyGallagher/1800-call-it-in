@@ -15,7 +15,7 @@ const providerFor = (externalServiceType: TelephonyServiceType) => {
 export const telephony = {
     getPhoneNumberId: (externalServiceType: TelephonyServiceType) => {
         const provider = providerFor(externalServiceType);
-        return provider.getPhoneNumberId();
+        return provider.phone.getPhoneNumberId();
     },
-    makeOutboundCall: notImplemented,
+    makeOrder: notImplemented,
 };

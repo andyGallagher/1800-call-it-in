@@ -2,7 +2,8 @@
     "private": true,
     "name": "1-800-call-that-shit-in",
     "scripts": {
-        "lint": "eslint --cache"
+        "lint": "eslint --cache",
+        "secrets": "pnpm --dir=scripts secrets"
     },
     "keywords": [],
     "author": "",

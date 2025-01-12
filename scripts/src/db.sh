@@ -14,9 +14,9 @@ echo "=> Loading .env file";
 set -o allexport; source "../.env"; set +o allexport
 
 # Disable this script anywhere but local---except the `local-shell` command.
-if [ "$ENV" != "local" ] && [ "$COMMAND" != "local-shell" ]; then
+if [ "$NODE_ENV" != "local" ] && [ "$COMMAND" != "local-shell" ]; then
   echo "The db script is only intended for local development".
-  echo "Found ENV='$ENV'."
+  echo "Found NODE_ENV='$NODE_ENV'."
   exit 1
 fi
 
