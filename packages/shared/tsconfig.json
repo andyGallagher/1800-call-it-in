@@ -1,9 +1,23 @@
 {
-    "name": "server",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+    "extends": "../../tsconfig.base.json",
+    "compilerOptions": {
+        "lib": [
+            "es2023"
+        ],
+        "module": "commonjs",
+        "target": "es2022",
+        "esModuleInterop": true,
+        "types": [
+            "node",
+        ],
+        "paths": {
+            "@/*": [
+                "./src/*",
+            ],
+        }
     },
-    "dependencies": {
-        "dotenv": "^16.4.7",
-    },
+    "include": [
+        "src/**/*",
+        "../schema/**/*"
+    ]
 }
