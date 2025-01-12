@@ -4,6 +4,9 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+overrides:
+  '@langchain/core': 0.3.29
+
 importers:
 
   .:
@@ -35,6 +38,9 @@ importers:
       vitest:
         specifier: ^2.1.8
         version: 2.1.8(@types/node@22.10.5)(jsdom@26.0.0)
+      zod:
+        specifier: ^3.24.1
+        version: 3.24.1
 
   packages/schema:
     dependencies:
@@ -69,9 +75,6 @@ importers:
       shared:
         specifier: workspace:*
         version: link:../shared
-      zod:
-        specifier: ^3.24.1
-        version: 3.24.1
     devDependencies:
       tsx:
         specifier: ^4.19.2
@@ -443,13 +446,13 @@ packages:
     resolution: {integrity: sha512-uw4po32OKptVjq+CYHrumgbfh4NuD7LqyE+ZgqY9I/LrLc6bHLMc+sisHmI17vgek0K/yqtarI0alPJbzrwyag==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': '>=0.3.29 <0.4.0'
+      '@langchain/core': 0.3.29
 
   '@langchain/textsplitters@0.1.0':
     resolution: {integrity: sha512-djI4uw9rlkAb5iMhtLED+xJebDdAG935AdP4eRTB02R7OB/act55Bj9wsskhZsvuyQRpO4O1wQOp85s6T6GWmw==}
     engines: {node: '>=18'}
     peerDependencies:
-      '@langchain/core': '>=0.2.21 <0.4.0'
+      '@langchain/core': 0.3.29
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1161,7 +1164,7 @@ packages:
       '@langchain/aws': '*'
       '@langchain/cerebras': '*'
       '@langchain/cohere': '*'
-      '@langchain/core': '>=0.2.21 <0.4.0'
+      '@langchain/core': 0.3.29
       '@langchain/google-genai': '*'
       '@langchain/google-vertexai': '*'
       '@langchain/google-vertexai-web': '*'

@@ -10,13 +10,9 @@
         "dotenv": "^16.4.7",
         "langchain": "^0.3.11",
         "schema": "workspace:*",
-        "shared": "workspace:*",
-        "zod": "^3.24.1"
+        "shared": "workspace:*"
     },
     "devDependencies": {
         "tsx": "^4.19.2"
-    },
-    "resolutions": {
-        "@langchain/core": "0.3.29"
     }
 }
