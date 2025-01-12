@@ -5,13 +5,18 @@
         "telephony": "tsx ./scripts/telephony.ts"
     },
     "dependencies": {
+        "@langchain/core": "0.3.29",
         "@vapi-ai/server-sdk": "^0.2.2",
         "dotenv": "^16.4.7",
+        "langchain": "^0.3.11",
         "schema": "workspace:*",
         "shared": "workspace:*",
         "zod": "^3.24.1"
     },
     "devDependencies": {
         "tsx": "^4.19.2"
+    },
+    "resolutions": {
+        "@langchain/core": "0.3.29"
     }
 }
