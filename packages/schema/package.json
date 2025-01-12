@@ -10,7 +10,7 @@
     "dependencies": {
         "@prisma/client": "^6.2.1",
         "prisma": "^6.2.1",
-        "prisma-zod-generator": "^0.8.13"
+        "zod-prisma": "^0.5.4"
     },
     "prisma": {
         "seed": "tsx prisma/seed.ts"

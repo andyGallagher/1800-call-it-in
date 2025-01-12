@@ -11,13 +11,12 @@ generator client {
 }
 
 /**
-* @see https://github.com/omar-dulaimi/prisma-zod-generator
-*/
+ * @see https://github.com/omar-dulaimi/prisma-zod-generator
+ */
 generator zod {
-    provider          = "prisma-zod-generator"
-    output            = "./src/generated-zod-schemas"
-    isGenerateSelect  = true
-    isGenerateInclude = true
+    provider      = "zod-prisma"
+    output        = "./src/generated-zod-schemas" // (default) the directory where generated zod schemas will be saved
+    relationModel = true
 }
 
 //##################################################################################################
@@ -44,37 +43,37 @@ model ApplicationVersion {
 }
 
 /**
-* Represents an item in a restaurant's menu.
-*/
+ * Represents an item in a restaurant's menu.
+ */
 model MenuItem {
-    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    name String
-    quantity Int
+    name        String
+    quantity    Int
     costPerItem Float?
 
     orderId String @db.Uuid
-    order Order @relation(fields: [orderId], references: [id])
+    order   Order  @relation(fields: [orderId], references: [id])
 }
 
 /**
-* Represents an order made by a customer.
-*/
+ * Represents an order made by a customer.
+ */
 model Order {
-    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     // Note that this may diverge from a summation of MenuItem due to restaurant policy.
-    totalCost Float?
+    totalCost  Float?
     pickupTime DateTime?
 
-    restaurantName String
+    restaurantName  String
     restaurantPhone String
 
-    orderItems MenuItem[]
+    orderItems    MenuItem[]
     telephoneCall TelephoneCall?
 }
 
@@ -83,16 +82,16 @@ enum TelephonyServiceType {
 }
 
 /**
-* Represents a telephone call made to a telephony service.
-*/
+ * Represents a telephone call made to a telephony service.
+ */
 model TelephoneCall {
-    id String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
     externalServiceType TelephonyServiceType
-    externalServiceId String
+    externalServiceId   String
 
     orderId String @unique @db.Uuid
-    order Order @relation(fields: [orderId], references: [id])
+    order   Order  @relation(fields: [orderId], references: [id])
 }
