@@ -8,6 +8,7 @@
         "@langchain/core": "0.3.29",
         "@vapi-ai/server-sdk": "^0.2.2",
         "dotenv": "^16.4.7",
+        "json-stable-stringify": "^1.2.1",
         "langchain": "^0.3.11",
         "schema": "workspace:*",
         "shared": "workspace:*"
