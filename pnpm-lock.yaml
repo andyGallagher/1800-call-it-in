@@ -10,6 +10,10 @@ overrides:
 importers:
 
   .:
+    dependencies:
+      tsx:
+        specifier: ^4.19.2
+        version: 4.19.2
     devDependencies:
       '@types/node':
         specifier: ^22.10.5
@@ -94,6 +98,8 @@ importers:
       dotenv:
         specifier: ^16.4.7
         version: 16.4.7
+
+  scripts: {}
 
 packages:
 

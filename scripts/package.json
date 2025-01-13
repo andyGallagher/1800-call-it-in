@@ -3,8 +3,5 @@
     "name": "scripts",
     "scripts": {
         "secrets": "tsx ./src/secrets.ts"
-    },
-    "devDependencies": {
-        "tsx": "^4.19.2"
     }
 }
