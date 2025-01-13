@@ -11,7 +11,7 @@ COMMAND="${1:-help}"
 ARGS=($@)
 
 echo "=> Loading .env file";
-set -o allexport; source "../.env"; set +o allexport
+set -o allexport; source "$(dirname "$0")/../.env"; set +o allexport
 
 # Disable this script anywhere but local---except the `local-shell` command.
 if [ "$NODE_ENV" != "local" ] && [ "$COMMAND" != "local-shell" ]; then

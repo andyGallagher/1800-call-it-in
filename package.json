@@ -2,6 +2,7 @@
     "private": true,
     "name": "1-800-call-that-shit-in",
     "scripts": {
+        "dev": "pnpm run --recursive --if-present --filter=!notifications --parallel dev",
         "lint": "eslint --cache",
         "secrets": "pnpm --dir=scripts secrets",
         "test": "vitest",

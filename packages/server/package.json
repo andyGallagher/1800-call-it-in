@@ -2,6 +2,8 @@
     "private": true,
     "name": "server",
     "scripts": {
+        "dev:tsx": "NODE_ENV=development node --import=tsx --watch-path=.env --watch-path=./src --watch-path=../shared --watch-path=../schema --watch-preserve-output",
+        "dev": "../../scripts/src/db.sh start; pnpm run dev:tsx --inspect=9876 src/index.ts",
         "telephony": "tsx ./scripts/telephony.ts"
     },
     "dependencies": {
