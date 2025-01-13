@@ -4,7 +4,8 @@
     "scripts": {
         "lint": "eslint --cache",
         "secrets": "pnpm --dir=scripts secrets",
-        "test": "vitest"
+        "test": "vitest",
+        "types": "find packages -name tsconfig.json -print0 | xargs -t -0 -n1 -I{} ./node_modules/.bin/tsc --project {} --noEmit --incremental false"
     },
     "keywords": [],
     "author": "",
