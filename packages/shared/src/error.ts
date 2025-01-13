@@ -2,11 +2,11 @@ export function unreachableCaseError(value: never): Error;
 export function unreachableCaseError(value: never, error: string): Error;
 export function unreachableCaseError<E extends Error>(
     value: never,
-    error: E
+    error: E,
 ): E;
 export function unreachableCaseError(
     value: never,
-    error?: string | Error
+    error?: string | Error,
 ): Error {
     if (!error) {
         return new Error(`Unreachable case: ${value}`);
