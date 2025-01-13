@@ -6,6 +6,7 @@
     },
     "dependencies": {
         "@langchain/core": "0.3.29",
+        "@langchain/openai": "^0.3.17",
         "@vapi-ai/server-sdk": "^0.2.2",
         "dotenv": "^16.4.7",
         "json-stable-stringify": "^1.2.1",
