@@ -161,7 +161,7 @@ export const vapi = {
              *
              */
             const outboundPhoneNumber =
-                config("NODE_ENV") === "local"
+                config("NODE_ENV") !== "production"
                     ? config("VAPI_STUB_PHONE_NUMBER")
                     : rawOutboundPhoneNumber;
 
