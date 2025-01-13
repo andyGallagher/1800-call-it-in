@@ -4,6 +4,21 @@ import { TelephonyServiceType } from "schema";
 import { config } from "shared/src/config";
 import { unreachableCaseError } from "shared/src/error";
 
+export const DEFAULT_TELEPHONY_PROVIDER = config(
+    "DEFAULT_TELEPHONY_PROVIDER",
+    (val): TelephonyServiceType => {
+        if (
+            !Object.values(TelephonyServiceType).includes(
+                val as TelephonyServiceType,
+            )
+        ) {
+            throw new Error("Invalid telephony provider");
+        }
+
+        return val as TelephonyServiceType;
+    },
+);
+
 const providerFor = (externalServiceType: TelephonyServiceType) => {
     switch (externalServiceType) {
         case "Vapi":
@@ -33,10 +48,19 @@ export const telephony = {
          *
          */
         const phoneNumber =
-            config("NODE_ENV") === "local"
+            config("NODE_ENV") !== "production"
                 ? config("VAPI_STUB_PHONE_NUMBER")
                 : rawPhoneNumber;
 
-        return provider.phone.call(phoneNumber, firstMessage, systemPrompt);
+        const { telephoneCallExternalServiceId } = await provider.phone.call(
+            phoneNumber,
+            firstMessage,
+            systemPrompt,
+        );
+
+        return {
+            telephoneCallExternalServiceId,
+            telephoneCallExternalServiceType: externalServiceType,
+        };
     },
 };

@@ -22,6 +22,8 @@ export type Telephony = {
             phoneNumber: string,
             firstMessage: string,
             systemPrompt: ChatPromptTemplate,
-        ) => Promise<{ telephoneCallExternalServiceId: string }>;
+        ) => Promise<{
+            telephoneCallExternalServiceId: string;
+        }>;
     };
 };

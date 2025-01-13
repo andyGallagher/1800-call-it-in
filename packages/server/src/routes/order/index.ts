@@ -1,7 +1,7 @@
 import { db } from "@/db";
 import { makeValidator } from "@/routes/validators";
 import { order } from "@/services/order";
-import { telephony } from "@/services/telephony";
+import { DEFAULT_TELEPHONY_PROVIDER, telephony } from "@/services/telephony";
 import { Hono } from "hono";
 import { CompleteOrder, PhoneNumber } from "schema";
 import { unindented } from "shared/src/format";
@@ -50,7 +50,7 @@ orderRouter
         const template = order.create.prompt.template(dbOrder);
 
         const call = await telephony.call(
-            "Vapi",
+            DEFAULT_TELEPHONY_PROVIDER,
             dbOrder.restaurantPhoneNumber,
             firstMessage,
             template,
