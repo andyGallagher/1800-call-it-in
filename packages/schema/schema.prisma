@@ -16,7 +16,7 @@ generator client {
 generator zod {
     provider      = "zod-prisma"
     output        = "./src/generated-zod-schemas" // (default) the directory where generated zod schemas will be saved
-    relationModel = true
+    relationModel = false
 }
 
 //##################################################################################################
@@ -73,7 +73,7 @@ model Order {
     restaurantName        String
     restaurantPhoneNumber String
 
-    orderItems    MenuItem[]
+    menuItems     MenuItem[]
     telephoneCall TelephoneCall?
 }
 
