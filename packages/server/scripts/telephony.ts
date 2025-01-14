@@ -7,6 +7,7 @@
 import { order } from "@/services/order";
 import { telephony } from "@/services/telephony";
 import { CompleteOrder } from "schema";
+import { config } from "shared/src/config";
 
 /**
  * Test out a phonecall
@@ -43,7 +44,7 @@ void (async () => {
 
             const call = await telephony.call(
                 "Vapi",
-                "+1234567890",
+                config("VAPI_STUB_PHONE_NUMBER"),
                 firstMessage,
                 template,
             );
