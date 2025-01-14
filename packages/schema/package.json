@@ -1,6 +1,7 @@
 {
     "private": true,
     "name": "schema",
+    "type": "module",
     "scripts": {
         "seed": "prisma db seed",
         "migrate": "prisma migrate dev",

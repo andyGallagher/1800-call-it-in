@@ -1,12 +1,12 @@
 // eslint-disable-next-line no-restricted-imports
-import { Prisma, PrismaClient } from "schema";
+import { DB } from "schema";
 
-const prismaClientExtension = Prisma.defineExtension({});
+const prismaClientExtension = DB.Prisma.defineExtension({});
 
 export const createClient = (debug: boolean = false) => {
     const unextendedClient =
         (globalThis as any).prismaGlobal ??
-        new PrismaClient({
+        new DB.PrismaClient({
             log: debug
                 ? ["query", "info", "warn", "error"]
                 : ["info", "warn", "error"],
@@ -27,5 +27,5 @@ export const createClient = (debug: boolean = false) => {
         (globalThis as any).prismaGlobal = client;
     }
 
-    return client as PrismaClient;
+    return client as DB.PrismaClient;
 };
