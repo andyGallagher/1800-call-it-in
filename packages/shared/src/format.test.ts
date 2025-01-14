@@ -1,5 +1,5 @@
-import { collapsed, removeNewlines, unindented } from "@/format";
 import { expect, test } from "vitest";
+import { collapsed, removeNewlines, unindented } from "./format";
 
 test("removeNewLines", () => {
     expect(removeNewlines`
