@@ -54,7 +54,7 @@
     justify-content: center;
 
     background-color: var(--text-color-inverted);
-    border: 2px solid var(--border-color-secondary);
+    border: 1px solid var(--border-color-secondary);
     padding: 4px;
     border-radius: 4px;
     color: var(--text-color-secondary);
