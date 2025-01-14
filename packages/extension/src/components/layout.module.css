@@ -1,0 +1,9 @@
+.layout {
+    display: flex;
+    flex-direction: column;
+    height: 420px;
+    width: 350px;
+    overflow: hidden;
+    background-color: var(--background-color);
+    border: 2px solid var(--border-color);
+}

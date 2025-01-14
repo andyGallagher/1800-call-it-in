@@ -1,0 +1,24 @@
+.header-wrapper {
+    flex: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    margin-top: 16px;
+}
+
+.header {
+    font-family: var(--brand-font);
+    color: var(--accent-color-brand);
+    font-size: 32px;
+    padding-bottom: 4px;
+}
+
+.header-border {
+    width: 40%;
+    height: 2px;
+    background-color: var(--border-color-accent);
+    margin: 8px 0;
+    border-radius: 8px;
+}

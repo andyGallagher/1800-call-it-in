@@ -1,0 +1,10 @@
+{
+    "manifest_version": 3,
+    "name": "1-800-call-that-shit-in",
+    "version": "0.0.0",
+    "description": "Cut out the middle man and just call that shit in",
+    "action": {
+        "default_popup": "index.html"
+    },
+    "permissions": []
+}

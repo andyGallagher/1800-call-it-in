@@ -1,0 +1,25 @@
+.body {
+    flex: 1;
+    padding: 8px 16px 32px;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.body-title {
+    padding: 0 3px 8px;
+    color: var(--text-color-secondary);
+}
+
+.body-content {
+    background-color: var(--background-color-accent);
+    padding: 8px 16px;
+    line-height: 1.5;
+    font-size: 12px;
+    border: 1px dashed var(--border-color-secondary);
+    border-radius: 2px;
+    flex: 1;
+    overflow: scroll;
+
+    font-family: var(--handwriting-font);
+}
