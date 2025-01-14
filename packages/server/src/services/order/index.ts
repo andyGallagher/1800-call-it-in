@@ -6,12 +6,50 @@
 import { PLACE_ORDER_SYSTEM_PROMPT } from "@/services/order/prompts";
 import { PlaceOrderOrderItem } from "@/services/order/types";
 import { HumanMessage } from "@langchain/core/messages";
-import { ChatPromptTemplate } from "@langchain/core/prompts";
+import { ChatPromptTemplate, PromptTemplate } from "@langchain/core/prompts";
+import { RunnableSequence } from "@langchain/core/runnables";
+import { ChatOpenAI } from "@langchain/openai";
 import stringify from "json-stable-stringify";
-import { CompleteOrder } from "schema";
+import { StructuredOutputParser } from "langchain/output_parsers";
+import { CompleteOrder, ParsedMenuItem } from "schema";
+import { config } from "shared/src/config";
+import { unindented } from "shared/src/format";
 import { assert } from "shared/src/function";
 
+const chatOpenAI = new ChatOpenAI({
+    apiKey: config("OPEN_AI_API_KEY"),
+});
+
 export const order = {
+    parse: {
+        menuItems: async (rawContent: string) => {
+            const chain = RunnableSequence.from([
+                PromptTemplate.fromTemplate(
+                    unindented`
+                        I'm going to give you the innerText of an HTML document, which contains an order for food.
+                        Please pick out the items of the food order.
+                        Items should consist of a name, quantity, and price.
+                        Return the items in a JSON array.
+    
+                        Rules:
+                        - If there are multiple items with the same name, combine them into one item.
+                        - If there is no price, set it to null.
+                        - Return the price as cents.
+    
+                        {rawContent}
+                    `,
+                ),
+                chatOpenAI,
+            ]).pipe(
+                StructuredOutputParser.fromZodSchema(ParsedMenuItem.array()),
+            );
+
+            return chain.invoke({
+                rawContent,
+            });
+        },
+    },
+
     create: {
         prompt: {
             firstMessage: (order: CompleteOrder) => {

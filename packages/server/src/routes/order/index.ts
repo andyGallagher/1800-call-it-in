@@ -2,16 +2,16 @@ import { db } from "@/db";
 import { makeValidator } from "@/routes/validators";
 import { order } from "@/services/order";
 import { DEFAULT_TELEPHONY_PROVIDER, telephony } from "@/services/telephony";
-import { PromptTemplate } from "@langchain/core/prompts";
-import { RunnableSequence } from "@langchain/core/runnables";
-import { ChatOpenAI } from "@langchain/openai";
+import { createHash } from "crypto";
 import { Hono } from "hono";
-import { StructuredOutputParser } from "langchain/output_parsers";
-import { CompleteOrder, ParsedMenuItem, PhoneNumber } from "schema";
-import { config } from "shared/src/config";
+import { CompleteOrder, PhoneNumber } from "schema";
 import { unindented } from "shared/src/format";
 import { notImplemented } from "shared/src/function";
 import { z } from "zod";
+
+const hash = (str: string): string => {
+    return createHash("md5").update(str).digest("hex");
+};
 
 export const orderRouter = new Hono();
 
@@ -89,37 +89,33 @@ orderRouter
 
 orderRouter.post(
     "/parse",
-    makeValidator(z.object({ rawContent: z.string() })),
+    makeValidator(
+        z.object({ rawContent: z.string(), bustCache: z.boolean().optional() }),
+    ),
     async (c) => {
-        const { rawContent } = c.req.valid("json");
+        const { rawContent, bustCache } = c.req.valid("json");
 
-        const chatOpenAI = new ChatOpenAI({
-            apiKey: config("OPEN_AI_API_KEY"),
+        const cached = await db.rawOrder.findFirst({
+            where: {
+                inputHash: hash(rawContent),
+            },
         });
 
-        const chain = RunnableSequence.from([
-            PromptTemplate.fromTemplate(
-                unindented`
-                    I'm going to give you the innerText of an HTML document, which contains an order for food.
-                    Please pick out the items of the food order.
-                    Items should consist of a name, quantity, and price.
-                    Return the items in a JSON array.
+        // This is not very typesafe, but it's fine for now.
+        if (bustCache !== true && cached) {
+            return c.json(cached.outputData);
+        }
 
-                    Rules:
-                    - If there are multiple items with the same name, combine them into one item.
-                    - If there is no price, set it to null.
-                    - Return the price as cents.
+        const menuItems = await order.parse.menuItems(rawContent);
 
-                    {rawContent}
-                `,
-            ),
-            chatOpenAI,
-        ]).pipe(StructuredOutputParser.fromZodSchema(ParsedMenuItem.array()));
-
-        const response = await chain.invoke({
-            rawContent,
+        await db.rawOrder.create({
+            data: {
+                inputHash: hash(rawContent),
+                inputData: rawContent,
+                outputData: menuItems,
+            },
         });
 
-        return c.json(response);
+        return c.json(menuItems);
     },
 );

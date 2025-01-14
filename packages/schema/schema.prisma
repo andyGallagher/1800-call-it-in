@@ -11,7 +11,7 @@ generator client {
 }
 
 /**
- * @see https://github.com/omar-dulaimi/prisma-zod-generator
+ * @see https://github.com/CarterGrimmeisen/zod-prisma
  */
 generator zod {
     provider      = "zod-prisma"
@@ -56,6 +56,23 @@ model MenuItem {
 
     orderId String @db.Uuid
     order   Order  @relation(fields: [orderId], references: [id])
+}
+
+/**
+ * Represents a raw order that has not been processed by the system.
+ * Saves me some cash, basically
+ */
+model RawOrder {
+    id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    inputHash String
+
+    inputData  Json
+    outputData Json
+
+    @@index([inputHash])
 }
 
 /**
