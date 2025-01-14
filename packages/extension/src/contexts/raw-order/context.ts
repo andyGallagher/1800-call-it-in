@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { notInitialized } from "shared/src/function";
 
 export const RawOrderContext = createContext<RawOrderContextProps>({
-    isLoadingRawContent: notInitialized,
-    rawContent: notInitialized,
+    isParsedMenuItemsPending: notInitialized,
+    isParsedMenuItemsLoading: notInitialized,
+    menuItems: notInitialized,
 });

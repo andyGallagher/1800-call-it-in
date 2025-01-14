@@ -6,10 +6,12 @@ const FooterInput = ({
     id,
     label,
     value,
+    onChange,
 }: {
     id: string;
     label: string;
     value: string;
+    onChange: (value: string) => void;
 }) => {
     return (
         <div className={styles.footerInputWrapper}>
@@ -19,13 +21,20 @@ const FooterInput = ({
 
             <div className={styles.footerInputDash} />
 
-            <input id={id} className={styles.footerInput} value={value} />
+            <input
+                id={id}
+                className={styles.footerInput}
+                value={value}
+                onChange={(e) => {
+                    onChange(e.target.value);
+                }}
+            />
         </div>
     );
 };
 
 export const Footer = () => {
-    const { rawContent } = useRawOrderContext();
+    const { menuItems } = useRawOrderContext();
 
     return (
         <div className={styles.footer}>
@@ -167,23 +176,26 @@ export const Footer = () => {
                     id="name"
                     label="Your name"
                     value="Andrew Gallagher"
+                    onChange={() => {}}
                 />
                 <FooterInput
                     id="phone"
                     label="Their Phone"
                     value="(415) 983-0888"
+                    onChange={() => {}}
                 />
 
                 <button
+                    disabled={menuItems?.length === 0}
                     className={clsx(
                         styles.footerOrderButton,
-                        rawContent === undefined && styles.disabled,
+                        menuItems?.length === 0 && styles.disabled,
                     )}
                 >
                     <span
                         className={clsx(
                             styles.footerOrderButtonGlyph,
-                            rawContent === undefined && styles.disabled,
+                            menuItems?.length === 0 && styles.disabled,
                         )}
                     >
                         <svg

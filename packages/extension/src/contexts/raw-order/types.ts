@@ -1,4 +1,8 @@
+import { MenuItemModel } from "schema";
+import { z } from "zod";
+
 export interface RawOrderContextProps {
-    isLoadingRawContent: boolean;
-    rawContent: string | undefined;
+    isParsedMenuItemsPending: boolean;
+    isParsedMenuItemsLoading: boolean;
+    menuItems: Array<z.infer<typeof MenuItemModel>> | undefined;
 }

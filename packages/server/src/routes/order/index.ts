@@ -6,14 +6,16 @@ import { Hono } from "hono";
 import { CompleteOrder, PhoneNumber } from "schema";
 import { unindented } from "shared/src/format";
 import { notImplemented } from "shared/src/function";
+import { z } from "zod";
 
 export const orderRouter = new Hono();
 
+orderRouter.get("/:id", (c) => {
+    return notImplemented();
+});
+
 orderRouter
-    .get("/:d", (c) => {
-        return notImplemented();
-    })
-    .post(makeValidator(CompleteOrder.omit({ id: true })), async (c) => {
+    .post("/", makeValidator(CompleteOrder.omit({ id: true })), async (c) => {
         const rawOrder = c.req.valid("json");
 
         if (!rawOrder.menuItems.length) {
@@ -79,3 +81,12 @@ orderRouter
     .delete((c) => {
         return notImplemented();
     });
+
+orderRouter.post(
+    "/parse",
+    makeValidator(z.object({ rawContent: z.string() })),
+    async (c) => {
+        const { rawContent } = c.req.valid("json");
+        return c.json([]);
+    },
+);

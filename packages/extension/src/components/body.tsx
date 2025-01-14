@@ -1,9 +1,11 @@
 import { useRawOrderContext } from "@/contexts/raw-order/hooks";
 import { clsx } from "clsx";
+import { assert } from "shared/src/function";
 import styles from "./body.module.css";
 
 export const Body = () => {
-    const { rawContent } = useRawOrderContext();
+    const { isParsedMenuItemsLoading, isParsedMenuItemsPending, menuItems } =
+        useRawOrderContext();
 
     return (
         <div className={styles.body}>
@@ -21,13 +23,48 @@ export const Body = () => {
                 </button>
             </div>
 
-            {rawContent === undefined ? (
-                <div className={clsx(styles.bodyContent, styles.loading)}>
-                    <div className={styles.bodyLoader}>Loading...</div>
-                </div>
-            ) : (
-                <div className={styles.bodyContent}>{rawContent}</div>
-            )}
+            {(() => {
+                if (isParsedMenuItemsPending) {
+                    return (
+                        <div
+                            className={clsx(styles.bodyContent, styles.loading)}
+                        >
+                            <div className={styles.bodyLoader}>Parsing...</div>
+                        </div>
+                    );
+                }
+
+                if (isParsedMenuItemsLoading) {
+                    return (
+                        <div
+                            className={clsx(styles.bodyContent, styles.loading)}
+                        >
+                            <div className={styles.bodyLoader}>
+                                Loading order...
+                            </div>
+                        </div>
+                    );
+                }
+
+                assert(menuItems !== undefined, "menuItems must be defined");
+                if (!menuItems.length) {
+                    return (
+                        <div
+                            className={clsx(styles.bodyContent, styles.loading)}
+                        >
+                            <div className={styles.bodyLoader}>
+                                No items in order
+                            </div>
+                        </div>
+                    );
+                }
+
+                return (
+                    <div className={styles.bodyContent}>
+                        {JSON.stringify(menuItems, null, 4)}
+                    </div>
+                );
+            })()}
         </div>
     );
 };
