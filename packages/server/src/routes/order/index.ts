@@ -2,8 +2,13 @@ import { db } from "@/db";
 import { makeValidator } from "@/routes/validators";
 import { order } from "@/services/order";
 import { DEFAULT_TELEPHONY_PROVIDER, telephony } from "@/services/telephony";
+import { PromptTemplate } from "@langchain/core/prompts";
+import { RunnableSequence } from "@langchain/core/runnables";
+import { ChatOpenAI } from "@langchain/openai";
 import { Hono } from "hono";
-import { CompleteOrder, PhoneNumber } from "schema";
+import { StructuredOutputParser } from "langchain/output_parsers";
+import { CompleteOrder, ParsedMenuItem, PhoneNumber } from "schema";
+import { config } from "shared/src/config";
 import { unindented } from "shared/src/format";
 import { notImplemented } from "shared/src/function";
 import { z } from "zod";
@@ -87,6 +92,34 @@ orderRouter.post(
     makeValidator(z.object({ rawContent: z.string() })),
     async (c) => {
         const { rawContent } = c.req.valid("json");
-        return c.json([]);
+
+        const chatOpenAI = new ChatOpenAI({
+            apiKey: config("OPEN_AI_API_KEY"),
+        });
+
+        const chain = RunnableSequence.from([
+            PromptTemplate.fromTemplate(
+                unindented`
+                    I'm going to give you the innerText of an HTML document, which contains an order for food.
+                    Please pick out the items of the food order.
+                    Items should consist of a name, quantity, and price.
+                    Return the items in a JSON array.
+
+                    Rules:
+                    - If there are multiple items with the same name, combine them into one item.
+                    - If there is no price, set it to null.
+                    - Return the price as cents.
+
+                    {rawContent}
+                `,
+            ),
+            chatOpenAI,
+        ]).pipe(StructuredOutputParser.fromZodSchema(ParsedMenuItem.array()));
+
+        const response = await chain.invoke({
+            rawContent,
+        });
+
+        return c.json(response);
     },
 );
