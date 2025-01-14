@@ -27,7 +27,7 @@ export default defineConfig({
         },
     },
     build: {
-        outDir: "build",
+        outDir: "dist",
         rollupOptions: {
             input: {
                 main: "./index.html",
