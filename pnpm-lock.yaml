@@ -73,6 +73,9 @@ importers:
       '@vitejs/plugin-react-swc':
         specifier: ^3.7.2
         version: 3.7.2(vite@6.0.7(@types/node@22.10.5)(less@4.2.1)(sass@1.83.1)(stylus@0.62.0)(tsx@4.19.2)(yaml@2.7.0))
+      chrome-types:
+        specifier: ^0.1.331
+        version: 0.1.331
       eslint-plugin-react-hooks:
         specifier: ^5.0.0
         version: 5.1.0(eslint@9.18.0)
@@ -1259,6 +1262,9 @@ packages:
   chokidar@4.0.3:
     resolution: {integrity: sha512-Qgzu8kfBvo+cA4962jnP1KkS6Dop5NS6g7R5LFYJr4b8Ub94PPQXUksCw9PvXoeXPRRddRNC5C1JQUR2SMGtnA==}
     engines: {node: '>= 14.16.0'}
+
+  chrome-types@0.1.331:
+    resolution: {integrity: sha512-6zQTuJoWxI60+GGy7O7t9Zos4Pt7yRZOuwvdRR35tgkHdKRsgVRKeZqyt2blbp6pIOpkJ7HA5aoj9QpTyDIu6Q==}
 
   clsx@2.1.1:
     resolution: {integrity: sha512-eYm0QWBtUrBWZWG0d386OGAw16Z995PiOVo2B7bjWSbHedGl5e0ZWaq65kOGgUSNesEIDkB9ISbTg/JK9dhCZA==}
@@ -3449,6 +3455,8 @@ snapshots:
     dependencies:
       readdirp: 4.1.1
     optional: true
+
+  chrome-types@0.1.331: {}
 
   clsx@2.1.1: {}
 
