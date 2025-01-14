@@ -119,7 +119,7 @@ export default tseslint.config(
             "no-console": ["error", { allow: ["warn", "error", "info"] }],
             "no-relative-import-paths/no-relative-import-paths": [
                 "error",
-                { allowSameFolder: false },
+                { allowSameFolder: true },
             ],
         },
     },
