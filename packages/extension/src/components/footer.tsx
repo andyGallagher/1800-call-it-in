@@ -2,6 +2,28 @@ import { useRawOrderContext } from "@/contexts/raw-order/hooks";
 import { clsx } from "clsx";
 import styles from "./footer.module.css";
 
+const FooterInput = ({
+    id,
+    label,
+    value,
+}: {
+    id: string;
+    label: string;
+    value: string;
+}) => {
+    return (
+        <div className={styles.footerInputWrapper}>
+            <label className={styles.footerInputLabel} htmlFor={id}>
+                {label}
+            </label>
+
+            <div className={styles.footerInputDash} />
+
+            <input id={id} className={styles.footerInput} value={value} />
+        </div>
+    );
+};
+
 export const Footer = () => {
     const { rawContent } = useRawOrderContext();
 
@@ -140,50 +162,42 @@ export const Footer = () => {
                 </svg>
             </div>
 
-            <div className={styles.footerButtons}>
-                <div className={styles.footerDetectionButtons}>
-                    <button className={styles.footerActionButton}>
-                        Detect Order
-                    </button>
+            <div className={styles.footerActions}>
+                <FooterInput
+                    id="name"
+                    label="Your name"
+                    value="Andrew Gallagher"
+                />
+                <FooterInput
+                    id="phone"
+                    label="Their Phone"
+                    value="(415) 983-0888"
+                />
 
-                    <button className={styles.footerRefresh}>
+                <button
+                    className={clsx(
+                        styles.footerOrderButton,
+                        rawContent === undefined && styles.disabled,
+                    )}
+                >
+                    <span
+                        className={clsx(
+                            styles.footerOrderButtonGlyph,
+                            rawContent === undefined && styles.disabled,
+                        )}
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             viewBox="0 0 24 24"
                             fill="currentColor"
-                            className={styles.footerRefreshIcon}
                         >
-                            <path d="M12 4V1L8 5l4 4V6c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
+                            <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1.003 1.003 0 011.11-.27c1.12.45 2.33.69 3.59.69.55 0 1 .45 1 1v3.5c0 .55-.45 1-1 1C10.29 22 2 13.71 2 3.5 2 2.95 2.45 2.5 3 2.5H6.5c.55 0 1 .45 1 1 0 1.26.24 2.47.69 3.59.14.36.06.77-.27 1.11l-2.2 2.2z" />
                         </svg>
-                    </button>
-                </div>
-
-                <div className={styles.footerOrderButtons}>
-                    <button
-                        className={clsx(
-                            styles.footerOrderButton,
-                            rawContent === undefined && styles.disabled,
-                        )}
-                    >
-                        <span
-                            className={clsx(
-                                styles.footerOrderButtonGlyph,
-                                rawContent === undefined && styles.disabled,
-                            )}
-                        >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 24 24"
-                                fill="currentColor"
-                            >
-                                <path d="M6.62 10.79a15.053 15.053 0 006.59 6.59l2.2-2.2a1.003 1.003 0 011.11-.27c1.12.45 2.33.69 3.59.69.55 0 1 .45 1 1v3.5c0 .55-.45 1-1 1C10.29 22 2 13.71 2 3.5 2 2.95 2.45 2.5 3 2.5H6.5c.55 0 1 .45 1 1 0 1.26.24 2.47.69 3.59.14.36.06.77-.27 1.11l-2.2 2.2z" />
-                            </svg>
-                        </span>
-                        <span className={styles.footerOrderButtonText}>
-                            Call it in
-                        </span>
-                    </button>
-                </div>
+                    </span>
+                    <span className={styles.footerOrderButtonText}>
+                        Call it in
+                    </span>
+                </button>
             </div>
 
             <p className={styles.footerCopyright}>© 2025 1-800-call-it-in</p>

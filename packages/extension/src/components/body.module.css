@@ -38,3 +38,34 @@
     padding: 8px 16px;
     font-style: italic;
 }
+
+.body-description {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.body-refresh {
+    height: 40px;
+    width: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--text-color-inverted);
+    border: 2px solid var(--border-color-secondary);
+    padding: 4px;
+    border-radius: 4px;
+    color: var(--text-color-secondary);
+
+    margin-right: 4px;
+
+    height: min-content;
+    width: min-content;
+}
+
+.body-refresh-glyph {
+    width: 16px;
+    transform: rotate(5deg);
+}

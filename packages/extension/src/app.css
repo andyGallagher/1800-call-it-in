@@ -26,6 +26,7 @@ html {
     font-size: 14px;
 }
 
+input,
 button {
     font-family: var(--monospace-font);
 }
