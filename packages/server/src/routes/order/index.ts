@@ -90,10 +90,10 @@ orderRouter
 orderRouter.post(
     "/parse",
     makeValidator(
-        z.object({ rawContent: z.string(), bustCache: z.boolean().optional() }),
+        z.object({ rawContent: z.string(), refresh: z.boolean().optional() }),
     ),
     async (c) => {
-        const { rawContent, bustCache } = c.req.valid("json");
+        const { rawContent, refresh } = c.req.valid("json");
 
         const cached = await db.rawOrder.findFirst({
             where: {
@@ -102,7 +102,7 @@ orderRouter.post(
         });
 
         // This is not very typesafe, but it's fine for now.
-        if (bustCache !== true && cached) {
+        if (refresh !== true && cached) {
             return c.json(cached.outputData);
         }
 

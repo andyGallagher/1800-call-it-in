@@ -6,4 +6,5 @@ export const RawOrderContext = createContext<RawOrderContextProps>({
     isParsedMenuItemsPending: notInitialized,
     isParsedMenuItemsLoading: notInitialized,
     menuItems: notInitialized,
+    refreshParsedMenuItems: notInitialized,
 });

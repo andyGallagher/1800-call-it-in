@@ -5,14 +5,23 @@ import { assert } from "shared/src/function";
 import styles from "./body.module.css";
 
 export const Body = () => {
-    const { isParsedMenuItemsLoading, isParsedMenuItemsPending, menuItems } =
-        useRawOrderContext();
+    const {
+        isParsedMenuItemsLoading,
+        isParsedMenuItemsPending,
+        menuItems,
+        refreshParsedMenuItems,
+    } = useRawOrderContext();
 
     return (
         <div className={styles.body}>
             <div className={styles.bodyDescription}>
                 <div className={styles.bodyTitle}>Your order:</div>
-                <button className={styles.bodyRefresh}>
+                <button
+                    className={styles.bodyRefresh}
+                    onClick={() => {
+                        refreshParsedMenuItems({ refresh: true });
+                    }}
+                >
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

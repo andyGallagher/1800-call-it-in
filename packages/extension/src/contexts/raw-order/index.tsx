@@ -11,10 +11,9 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
     const [rawContent, setRawContent] = useState<string | undefined>(undefined);
     const didInitialExecutionRef = useRef(false);
 
-    const { isPending, data, mutateAsync } = useMutation({
-        mutationFn: async () => {
-            // Note that this is OK because we enabled the query only when rawContent is defined
-            assert(rawContent !== undefined, "rawContent must be defined");
+    const { isPending, data, mutate } = useMutation({
+        mutationFn: async ({ refresh }: { refresh: boolean }) => {
+            assert(rawContent !== undefined, "Raw content must be defined");
 
             const response = await fetch(
                 "/order/parse",
@@ -22,11 +21,13 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
                 {
                     input: z.object({
                         rawContent: z.string(),
+                        refresh: z.boolean(),
                     }),
                     output: ParsedMenuItem.array(),
                 },
                 {
                     rawContent,
+                    refresh,
                 },
             );
 
@@ -76,8 +77,8 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
 
         didInitialExecutionRef.current = true;
 
-        void mutateAsync();
-    }, [rawContent, mutateAsync]);
+        mutate({ refresh: false });
+    }, [rawContent, mutate]);
 
     return (
         <RawOrderContext.Provider
@@ -85,6 +86,8 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
                 isParsedMenuItemsPending: isPending,
                 isParsedMenuItemsLoading: !isPending && !data,
                 menuItems: data,
+                refreshParsedMenuItems: (variables: { refresh: boolean }) =>
+                    mutate(variables),
             }}
         >
             {children}
