@@ -1,18 +1,21 @@
+import { useRawOrderContext } from "@/contexts/raw-order/hooks";
+import { clsx } from "clsx";
 import styles from "./body.module.css";
 
 export const Body = () => {
+    const { rawContent } = useRawOrderContext();
+
     return (
         <div className={styles.body}>
             <div className={styles.bodyTitle}>Your order:</div>
 
-            <div className={styles.bodyContent}>
-                <div>
-                    <div>2 x Cheeseburger</div>
-                    <div>1 x Fries</div>
-                    <div>3 x Soda</div>
-                    <div>1 x Salad</div>
+            {rawContent === undefined ? (
+                <div className={clsx(styles.bodyContent, styles.loading)}>
+                    <div className={styles.bodyLoader}>Loading...</div>
                 </div>
-            </div>
+            ) : (
+                <div className={styles.bodyContent}>{rawContent}</div>
+            )}
         </div>
     );
 };

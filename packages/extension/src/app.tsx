@@ -3,18 +3,20 @@ import { Body } from "@/components/body";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { Layout } from "@/components/layout";
+import { RawOrderProvider } from "@/contexts/raw-order";
 import "@/reset.css";
-
 import { ErrorBoundary } from "@/shared/error-boundary";
 
 export const App = () => {
     return (
         <ErrorBoundary>
-            <Layout>
-                <Header />
-                <Body />
-                <Footer />
-            </Layout>
+            <RawOrderProvider>
+                <Layout>
+                    <Header />
+                    <Body />
+                    <Footer />
+                </Layout>
+            </RawOrderProvider>
         </ErrorBoundary>
     );
 };

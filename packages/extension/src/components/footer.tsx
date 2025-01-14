@@ -1,8 +1,9 @@
+import { useRawOrderContext } from "@/contexts/raw-order/hooks";
 import { clsx } from "clsx";
 import styles from "./footer.module.css";
 
 export const Footer = () => {
-    const hasDetectedOrder = false;
+    const { rawContent } = useRawOrderContext();
 
     return (
         <div className={styles.footer}>
@@ -161,13 +162,13 @@ export const Footer = () => {
                     <button
                         className={clsx(
                             styles.footerOrderButton,
-                            !hasDetectedOrder && styles.disabled,
+                            rawContent === undefined && styles.disabled,
                         )}
                     >
                         <span
                             className={clsx(
                                 styles.footerOrderButtonGlyph,
-                                !hasDetectedOrder && styles.disabled,
+                                rawContent === undefined && styles.disabled,
                             )}
                         >
                             <svg
