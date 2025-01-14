@@ -1,3 +1,8 @@
+export const formatCentsToDollars = (cents: number): string => {
+    const inDollars = (cents / 100).toFixed(2);
+    return `$${inDollars}`;
+};
+
 /**
  * Remove newlines in a tagged template literal.
  *

@@ -1,5 +1,6 @@
 import { useRawOrderContext } from "@/contexts/raw-order/hooks";
 import { clsx } from "clsx";
+import { formatCentsToDollars } from "shared/src/format";
 import { assert } from "shared/src/function";
 import styles from "./body.module.css";
 
@@ -61,10 +62,57 @@ export const Body = () => {
 
                 return (
                     <div className={styles.bodyContent}>
-                        {JSON.stringify(menuItems, null, 4)}
+                        {menuItems.map((menuItem, index) => (
+                            <div key={index} className={styles.bodyItem}>
+                                <span>
+                                    {menuItem.quantity} x {menuItem.name}
+                                </span>
+                                {menuItem.price !== null && (
+                                    <>
+                                        &nbsp;
+                                        <span className={styles.bodyItemPrice}>
+                                            (
+                                            {`${formatCentsToDollars(menuItem.price)}`}
+                                            )
+                                        </span>
+                                    </>
+                                )}
+                            </div>
+                        ))}
                     </div>
                 );
             })()}
+
+            <div className={clsx(styles.bodyDescription, styles.bottom)}>
+                <div className={clsx(styles.bodyTotalPrice)}>
+                    <span className={styles.bodyTotalPriceLabel}>Total: </span>
+                    <span className={styles.bodyTotalPriceDollarFigure}>
+                        {(() => {
+                            if (!menuItems) {
+                                return "--";
+                            }
+
+                            if (menuItems.length === 0) {
+                                return "0.00";
+                            }
+
+                            if (menuItems.some((item) => item.price === null)) {
+                                return "--";
+                            }
+
+                            const total = menuItems?.reduce((acc, next) => {
+                                assert(
+                                    next.price !== null,
+                                    "price must be defined",
+                                );
+                                return acc + next.price;
+                            }, 0);
+
+                            return formatCentsToDollars(total);
+                        })()}
+                    </span>
+                </div>
+            </div>
         </div>
     );
 };

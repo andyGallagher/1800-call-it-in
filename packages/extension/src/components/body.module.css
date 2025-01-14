@@ -14,8 +14,27 @@
     color: var(--text-color-secondary);
 }
 
+.body-total-price {
+    color: var(--text-color-secondary);
+    font-size: 10px;
+    padding: 8px 3px 0;
+
+    display: flex;
+    flex: 1;
+}
+
+.body-total-price-label {
+    flex: 1;
+    text-align: right;
+}
+
+.body-total-price-dollar-figure {
+    flex: 0 0 60px;
+    text-align: right;
+}
+
 .body-content {
-    background-color: var(--background-color-accent);
+    background-color: var(--background-color-accent-secondary);
     padding: 8px 16px;
     line-height: 1.5;
     font-size: 12px;
@@ -26,6 +45,14 @@
     overflow-x: hidden;
 
     font-family: var(--handwriting-font);
+
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 24px,
+        var(--border-color-secondary-accent) 24px,
+        var(--border-color-secondary-accent) 25px
+    );
 
     &.loading {
         display: flex;
@@ -43,6 +70,11 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
+
+    &.bottom {
+        justify-content: initial;
+        width: 100%;
+    }
 }
 
 .body-refresh {
@@ -68,4 +100,14 @@
 .body-refresh-glyph {
     width: 16px;
     transform: rotate(5deg);
+}
+
+.body-item {
+    white-space: nowrap;
+    height: 25px;
+}
+
+.body-item-price {
+    font-style: italic;
+    color: var(--text-color-secondary);
 }
