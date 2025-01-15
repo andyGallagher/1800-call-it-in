@@ -95,7 +95,7 @@ export const Body = () => {
                                         &nbsp;
                                         <span className={styles.bodyItemPrice}>
                                             (
-                                            {`${formatCentsToDollars(menuItem.costPerItem)}`}
+                                            {`${formatCentsToDollars(menuItem.quantity * menuItem.costPerItem)}`}
                                             )
                                         </span>
                                     </>
