@@ -7,4 +7,7 @@ export const OrderContext = createContext<OrderContextProps>({
     isParsedMenuItemsLoading: notInitialized,
     parsedMenuItems: notInitialized,
     refreshParsedMenuItems: notInitialized,
+    placeOrder: notInitialized,
+    order: notInitialized,
+    isOrderLoading: notInitialized,
 });

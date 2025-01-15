@@ -1,4 +1,4 @@
-import { ParsedMenuItem } from "schema";
+import { CompleteOrder, ParsedMenuItem } from "schema";
 import { z } from "zod";
 
 export interface OrderContextProps {
@@ -16,4 +16,6 @@ export interface OrderContextProps {
         userPhoneNumber: string;
         restaurantPhoneNumber: string;
     }) => void;
+    order: CompleteOrder | undefined;
+    isOrderLoading: boolean;
 }

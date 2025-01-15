@@ -4,7 +4,12 @@ import { OrderContextProps } from "@/contexts/order/types";
 import { fetch } from "@/util/fetch";
 import { useMutation } from "@tanstack/react-query";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { ParsedMenuItem, ParseOrderInput } from "schema";
+import {
+    CompleteOrder,
+    CreateOrderInput,
+    ParsedMenuItem,
+    ParseOrderInput,
+} from "schema";
 import { assert } from "shared/src/function";
 
 /**
@@ -94,25 +99,46 @@ const usePlaceOrder = ({
 }: {
     parsedMenuItems: OrderContextProps["parsedMenuItems"];
 }) => {
-    const placeOrder = ({
-        userName,
-        userPhoneNumber,
-        restaurantPhoneNumber,
-    }: {
+    const { isPending, data, mutate } = useMutation({
+        mutationFn: async (variables: {
+            userName: string;
+            userPhoneNumber: string;
+            restaurantPhoneNumber: string;
+        }) => {
+            assert(
+                parsedMenuItems !== undefined,
+                "Parsed menu items must be defined",
+            );
+
+            const response = await fetch(
+                "/order/",
+                "post",
+                {
+                    input: CreateOrderInput,
+                    output: CompleteOrder,
+                },
+                {
+                    parsedMenuItems,
+                    ...variables,
+                },
+            );
+
+            return response;
+        },
+    });
+
+    const placeOrder = (variables: {
         userName: string;
         userPhoneNumber: string;
         restaurantPhoneNumber: string;
     }) => {
-        console.info("placeOrder", {
-            userName,
-            userPhoneNumber,
-            restaurantPhoneNumber,
-            parsedMenuItems,
-        });
+        mutate(variables);
     };
 
     return {
         placeOrder,
+        order: data,
+        isOrderLoading: isPending && !data,
     };
 };
 
@@ -123,7 +149,9 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         parsedMenuItems,
         refreshParsedMenuItems,
     } = useRawContent();
-    const { placeOrder } = usePlaceOrder({ parsedMenuItems });
+    const { placeOrder, order, isOrderLoading } = usePlaceOrder({
+        parsedMenuItems,
+    });
 
     return (
         <OrderContext.Provider
@@ -133,6 +161,8 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
                 parsedMenuItems,
                 refreshParsedMenuItems,
                 placeOrder,
+                order,
+                isOrderLoading,
             }}
         >
             {children}
