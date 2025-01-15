@@ -111,7 +111,7 @@ const usePlaceOrder = ({
             );
 
             const response = await fetch(
-                "/order/",
+                "/order",
                 "post",
                 {
                     input: CreateOrderInput,

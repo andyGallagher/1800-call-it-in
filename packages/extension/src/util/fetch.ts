@@ -9,6 +9,9 @@ const joinUrls = (baseUrl: string, relativeUrl: string): string => {
     if (relativeUrl.startsWith("/")) {
         relativeUrl = relativeUrl.substring(1);
     }
+    if (relativeUrl.endsWith("/")) {
+        relativeUrl = relativeUrl.slice(0, -1);
+    }
     return baseUrl + relativeUrl;
 };
 
