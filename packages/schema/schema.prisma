@@ -110,4 +110,6 @@ model TelephoneCall {
 
     orderId String @unique @db.Uuid
     order   Order  @relation(fields: [orderId], references: [id])
+
+    transcription String?
 }
