@@ -5,6 +5,6 @@ import { notInitialized } from "shared/src/function";
 export const OrderContext = createContext<OrderContextProps>({
     isParsedMenuItemsPending: notInitialized,
     isParsedMenuItemsLoading: notInitialized,
-    menuItems: notInitialized,
+    parsedMenuItems: notInitialized,
     refreshParsedMenuItems: notInitialized,
 });

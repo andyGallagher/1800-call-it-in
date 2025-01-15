@@ -34,7 +34,7 @@ const FooterInput = ({
 };
 
 export const Footer = () => {
-    const { menuItems } = useOrderContext();
+    const { parsedMenuItems } = useOrderContext();
 
     return (
         <div className={styles.footer}>
@@ -192,16 +192,16 @@ export const Footer = () => {
                 />
 
                 <button
-                    disabled={menuItems?.length === 0}
+                    disabled={parsedMenuItems?.length === 0}
                     className={clsx(
                         styles.footerOrderButton,
-                        menuItems?.length === 0 && styles.disabled,
+                        parsedMenuItems?.length === 0 && styles.disabled,
                     )}
                 >
                     <span
                         className={clsx(
                             styles.footerOrderButtonGlyph,
-                            menuItems?.length === 0 && styles.disabled,
+                            parsedMenuItems?.length === 0 && styles.disabled,
                         )}
                     >
                         <svg

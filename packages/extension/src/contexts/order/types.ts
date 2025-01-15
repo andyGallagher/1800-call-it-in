@@ -4,6 +4,16 @@ import { z } from "zod";
 export interface OrderContextProps {
     isParsedMenuItemsPending: boolean;
     isParsedMenuItemsLoading: boolean;
-    menuItems: Array<z.infer<typeof ParsedMenuItem>> | undefined;
+    parsedMenuItems: Array<z.infer<typeof ParsedMenuItem>> | undefined;
     refreshParsedMenuItems: (variables: { refresh: boolean }) => void;
+
+    placeOrder: ({
+        userName,
+        userPhoneNumber,
+        restaurantPhoneNumber,
+    }: {
+        userName: string;
+        userPhoneNumber: string;
+        restaurantPhoneNumber: string;
+    }) => void;
 }

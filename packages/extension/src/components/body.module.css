@@ -95,6 +95,12 @@
 
     height: min-content;
     width: min-content;
+
+    opacity: 1;
+
+    &:disabled {
+        opacity: 0.6;
+    }
 }
 
 .body-refresh-glyph {

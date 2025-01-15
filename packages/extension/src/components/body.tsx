@@ -8,7 +8,7 @@ export const Body = () => {
     const {
         isParsedMenuItemsLoading,
         isParsedMenuItemsPending,
-        menuItems,
+        parsedMenuItems,
         refreshParsedMenuItems,
     } = useOrderContext();
 
@@ -18,7 +18,18 @@ export const Body = () => {
                 <div className={styles.bodyTitle}>Your order:</div>
                 <button
                     className={styles.bodyRefresh}
+                    disabled={
+                        isParsedMenuItemsPending || isParsedMenuItemsLoading
+                    }
                     onClick={() => {
+                        if (
+                            isParsedMenuItemsPending ||
+                            isParsedMenuItemsLoading
+                        ) {
+                            console.warn("refresh button is disabled");
+                            return;
+                        }
+
                         refreshParsedMenuItems({ refresh: true });
                     }}
                 >
@@ -56,8 +67,11 @@ export const Body = () => {
                     );
                 }
 
-                assert(menuItems !== undefined, "menuItems must be defined");
-                if (!menuItems.length) {
+                assert(
+                    parsedMenuItems !== undefined,
+                    "parsedMenuItems must be defined",
+                );
+                if (!parsedMenuItems.length) {
                     return (
                         <div
                             className={clsx(styles.bodyContent, styles.loading)}
@@ -71,7 +85,7 @@ export const Body = () => {
 
                 return (
                     <div className={styles.bodyContent}>
-                        {menuItems.map((menuItem, index) => (
+                        {parsedMenuItems.map((menuItem, index) => (
                             <div key={index} className={styles.bodyItem}>
                                 <span>
                                     {menuItem.quantity} x {menuItem.name}
@@ -97,25 +111,32 @@ export const Body = () => {
                     <span className={styles.bodyTotalPriceLabel}>Total: </span>
                     <span className={styles.bodyTotalPriceDollarFigure}>
                         {(() => {
-                            if (!menuItems) {
+                            if (!parsedMenuItems) {
                                 return "--";
                             }
 
-                            if (menuItems.length === 0) {
+                            if (parsedMenuItems.length === 0) {
                                 return "0.00";
                             }
 
-                            if (menuItems.some((item) => item.price === null)) {
+                            if (
+                                parsedMenuItems.some(
+                                    (item) => item.price === null,
+                                )
+                            ) {
                                 return "--";
                             }
 
-                            const total = menuItems?.reduce((acc, next) => {
-                                assert(
-                                    next.price !== null,
-                                    "price must be defined",
-                                );
-                                return acc + next.price;
-                            }, 0);
+                            const total = parsedMenuItems?.reduce(
+                                (acc, next) => {
+                                    assert(
+                                        next.price !== null,
+                                        "price must be defined",
+                                    );
+                                    return acc + next.price;
+                                },
+                                0,
+                            );
 
                             return formatCentsToDollars(total);
                         })()}

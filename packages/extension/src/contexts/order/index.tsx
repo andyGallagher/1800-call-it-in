@@ -1,12 +1,16 @@
 import { OrderContext } from "@/contexts/order/context";
 import { stub } from "@/contexts/order/data";
+import { OrderContextProps } from "@/contexts/order/types";
 import { fetch } from "@/util/fetch";
 import { useMutation } from "@tanstack/react-query";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { ParsedMenuItem, ParseOrderInput } from "schema";
 import { assert } from "shared/src/function";
 
-export const OrderProvider = ({ children }: { children: ReactNode }) => {
+/**
+ * Handle initial fetching of raw content
+ */
+const useRawContent = () => {
     const [rawContent, setRawContent] = useState<string | undefined>(undefined);
     const didInitialExecutionRef = useRef(false);
 
@@ -76,14 +80,59 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         mutate({ refresh: false });
     }, [rawContent, mutate]);
 
+    return {
+        isParsedMenuItemsPending: isPending,
+        isParsedMenuItemsLoading: !isPending && !data,
+        parsedMenuItems: data,
+        refreshParsedMenuItems: (variables: { refresh: boolean }) =>
+            mutate(variables),
+    };
+};
+
+const usePlaceOrder = ({
+    parsedMenuItems,
+}: {
+    parsedMenuItems: OrderContextProps["parsedMenuItems"];
+}) => {
+    const placeOrder = ({
+        userName,
+        userPhoneNumber,
+        restaurantPhoneNumber,
+    }: {
+        userName: string;
+        userPhoneNumber: string;
+        restaurantPhoneNumber: string;
+    }) => {
+        console.info("placeOrder", {
+            userName,
+            userPhoneNumber,
+            restaurantPhoneNumber,
+            parsedMenuItems,
+        });
+    };
+
+    return {
+        placeOrder,
+    };
+};
+
+export const OrderProvider = ({ children }: { children: ReactNode }) => {
+    const {
+        isParsedMenuItemsPending,
+        isParsedMenuItemsLoading,
+        parsedMenuItems,
+        refreshParsedMenuItems,
+    } = useRawContent();
+    const { placeOrder } = usePlaceOrder({ parsedMenuItems });
+
     return (
         <OrderContext.Provider
             value={{
-                isParsedMenuItemsPending: isPending,
-                isParsedMenuItemsLoading: !isPending && !data,
-                menuItems: data,
-                refreshParsedMenuItems: (variables: { refresh: boolean }) =>
-                    mutate(variables),
+                isParsedMenuItemsPending,
+                isParsedMenuItemsLoading,
+                parsedMenuItems,
+                refreshParsedMenuItems,
+                placeOrder,
             }}
         >
             {children}
