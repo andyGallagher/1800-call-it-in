@@ -11,7 +11,7 @@ import { RunnableSequence } from "@langchain/core/runnables";
 import { ChatOpenAI } from "@langchain/openai";
 import stringify from "json-stable-stringify";
 import { StructuredOutputParser } from "langchain/output_parsers";
-import { CompleteOrder, ParsedMenuItem } from "schema";
+import { CompleteOrder, ParsedMenuItem, ParsedTranscription } from "schema";
 import { config } from "shared/src/config";
 import { unindented } from "shared/src/format";
 import { assert } from "shared/src/function";
@@ -46,6 +46,31 @@ export const order = {
 
             return chain.invoke({
                 rawContent,
+            });
+        },
+
+        callTranscription: async (transcription: string) => {
+            const chain = RunnableSequence.from([
+                PromptTemplate.fromTemplate(
+                    unindented`
+                        I'm going to give you a transcription of a phone call where a patron is ordering food.
+                        Please parse the transcription and return the total cost of the order and time the order is ready for pickup.
+                        Time may be given in relative terms, such as "in 30 minutes".  Please convert this to an absolute time.
+                        Return the total cost and pickup time as a JSON object, with keys of totalCost and pickupTime.
+
+                        Rules:
+                        - If the total cost is not mentioned, set it to null.
+                        - If the pickup time is not mentioned, set it to null.
+                        - Return the totalCost as cents.
+    
+                        {transcription}
+                    `,
+                ),
+                chatOpenAI,
+            ]).pipe(StructuredOutputParser.fromZodSchema(ParsedTranscription));
+
+            return chain.invoke({
+                transcription,
             });
         },
     },

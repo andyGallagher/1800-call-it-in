@@ -11,7 +11,6 @@ import {
     PhoneNumber,
 } from "schema";
 import { unindented } from "shared/src/format";
-import { notImplemented } from "shared/src/function";
 
 const hash = (str: string): string => {
     return createHash("md5").update(str).digest("hex");
@@ -19,8 +18,67 @@ const hash = (str: string): string => {
 
 export const orderRouter = new Hono();
 
-orderRouter.get("/:id", (c) => {
-    return notImplemented();
+orderRouter.get("/:id", async (c) => {
+    const id = c.req.param("id");
+
+    try {
+        const dbOrder = await db.order.findFirstOrThrow({
+            where: {
+                id: id,
+            },
+            include: {
+                menuItems: true,
+                telephoneCall: true,
+            },
+        });
+
+        if (
+            !dbOrder.telephoneCall ||
+            dbOrder.telephoneCall.transcription !== null
+        ) {
+            return c.json(dbOrder);
+        }
+
+        const transcriptionOutput = await telephony.transcription(
+            dbOrder.telephoneCall.externalServiceType,
+            dbOrder.telephoneCall.externalServiceId,
+        );
+
+        if (transcriptionOutput === undefined) {
+            return c.json(dbOrder);
+        }
+
+        await db.telephoneCall.update({
+            data: {
+                transcription: transcriptionOutput.transcription,
+            },
+            where: {
+                id: dbOrder.telephoneCall.id,
+            },
+        });
+
+        const parsedTranscription = await order.parse.callTranscription(
+            transcriptionOutput.transcription,
+        );
+
+        const updatedDbOrder = await db.order.update({
+            data: {
+                pickupTime: parsedTranscription.pickupTime,
+                totalCost: parsedTranscription.totalCost,
+            },
+            where: {
+                id: id,
+            },
+            include: {
+                menuItems: true,
+                telephoneCall: true,
+            },
+        });
+
+        return c.json(updatedDbOrder);
+    } catch (error) {
+        return c.json({ error: "Order not found" }, 404);
+    }
 });
 
 orderRouter.post("/", makeValidator(CreateOrderInput), async (c) => {

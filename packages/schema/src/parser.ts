@@ -5,3 +5,8 @@ export const ParsedMenuItem = z.object({
     quantity: z.number(),
     costPerItem: z.number().nullable(),
 });
+
+export const ParsedTranscription = z.object({
+    pickupTime: z.string().nullable(),
+    totalCost: z.number().nullable(),
+});

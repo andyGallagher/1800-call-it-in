@@ -2,7 +2,7 @@ import { OrderContext } from "@/contexts/order/context";
 import { stub } from "@/contexts/order/data";
 import { OrderContextProps } from "@/contexts/order/types";
 import { fetch } from "@/util/fetch";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import {
     CompleteOrder,
@@ -99,6 +99,8 @@ const usePlaceOrder = ({
 }: {
     parsedMenuItems: OrderContextProps["parsedMenuItems"];
 }) => {
+    const queryClient = useQueryClient();
+
     const { isPending, data, mutate } = useMutation({
         mutationFn: async (variables: {
             userName: string;
@@ -125,6 +127,9 @@ const usePlaceOrder = ({
 
             return response;
         },
+        onSuccess: (data) => {
+            queryClient.setQueryData(["activeOrder"], data);
+        },
     });
 
     const placeOrder = (variables: {
@@ -137,9 +142,35 @@ const usePlaceOrder = ({
 
     return {
         placeOrder,
-        order: data,
+        placedOrder: data,
         isOrderLoading: isPending && !data,
     };
+};
+
+const useActiveOrder = ({
+    placedOrder,
+}: {
+    placedOrder: CompleteOrder | undefined;
+}) => {
+    const { data } = useQuery({
+        queryKey: ["activeOrder"],
+        queryFn: async () => {
+            assert(
+                placedOrder !== undefined,
+                "useActiveOrder: order must be defined",
+            );
+
+            const response = await fetch(`/order/${placedOrder.id}`, "get", {
+                output: CompleteOrder,
+            });
+
+            return response;
+        },
+        enabled: placedOrder !== undefined,
+        refetchInterval: 10_000,
+    });
+
+    return { order: data };
 };
 
 export const OrderProvider = ({ children }: { children: ReactNode }) => {
@@ -149,9 +180,10 @@ export const OrderProvider = ({ children }: { children: ReactNode }) => {
         parsedMenuItems,
         refreshParsedMenuItems,
     } = useRawContent();
-    const { placeOrder, order, isOrderLoading } = usePlaceOrder({
+    const { placeOrder, placedOrder, isOrderLoading } = usePlaceOrder({
         parsedMenuItems,
     });
+    const { order } = useActiveOrder({ placedOrder });
 
     return (
         <OrderContext.Provider

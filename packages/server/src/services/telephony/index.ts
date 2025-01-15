@@ -49,4 +49,14 @@ export const telephony = {
             telephoneCallExternalServiceType: externalServiceType,
         };
     },
+
+    transcription: async (
+        externalServiceType: string,
+        telephoneCallExternalServiceId: string,
+    ) => {
+        const provider = providerFor(externalServiceType);
+        return provider.transcription.getTranscription(
+            telephoneCallExternalServiceId,
+        );
+    },
 };
