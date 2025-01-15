@@ -97,10 +97,6 @@ model Order {
     telephoneCall TelephoneCall?
 }
 
-enum TelephonyServiceType {
-    Vapi
-}
-
 /**
  * Represents a telephone call made to a telephony service.
  */
@@ -109,7 +105,7 @@ model TelephoneCall {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    externalServiceType TelephonyServiceType
+    externalServiceType String @default("Vapi")
     externalServiceId   String
 
     orderId String @unique @db.Uuid

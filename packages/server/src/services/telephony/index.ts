@@ -1,36 +1,22 @@
 import { vapi } from "@/services/telephony/vapi";
 import { ChatPromptTemplate } from "@langchain/core/prompts";
-import { DB } from "schema";
 import { config } from "shared/src/config";
-import { unreachableCaseError } from "shared/src/error";
+import { notImplemented } from "shared/src/function";
 
-export const DEFAULT_TELEPHONY_PROVIDER = config(
-    "DEFAULT_TELEPHONY_PROVIDER",
-    (val): DB.TelephonyServiceType => {
-        if (
-            !Object.values(DB.TelephonyServiceType).includes(
-                val as DB.TelephonyServiceType,
-            )
-        ) {
-            throw new Error("Invalid telephony provider");
-        }
+export const DEFAULT_TELEPHONY_PROVIDER = config("DEFAULT_TELEPHONY_PROVIDER");
 
-        return val as DB.TelephonyServiceType;
-    },
-);
-
-const providerFor = (externalServiceType: DB.TelephonyServiceType) => {
+const providerFor = (externalServiceType: string) => {
     switch (externalServiceType) {
         case "Vapi":
             return vapi;
         default:
-            throw unreachableCaseError(externalServiceType);
+            throw notImplemented();
     }
 };
 
 export const telephony = {
     call: async (
-        externalServiceType: DB.TelephonyServiceType,
+        externalServiceType: string,
         rawPhoneNumber: string,
         firstMessage: string,
         systemPrompt: ChatPromptTemplate,
