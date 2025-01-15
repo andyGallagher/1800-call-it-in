@@ -22,7 +22,7 @@ orderRouter
     .post("/", makeValidator(CreateOrderInput), async (c) => {
         const rawOrder = c.req.valid("json");
 
-        if (!rawOrder.menuItems.length) {
+        if (!rawOrder.parsedMenuItems.length) {
             return c.json({ error: [{ message: "No menu items" }] }, 400);
         }
 
@@ -44,7 +44,7 @@ orderRouter
                 ...rawOrder,
 
                 menuItems: {
-                    create: rawOrder.menuItems,
+                    create: rawOrder.parsedMenuItems,
                 },
             },
             include: {
