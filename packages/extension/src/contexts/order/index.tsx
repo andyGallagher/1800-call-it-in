@@ -1,13 +1,12 @@
-import { RawOrderContext } from "@/contexts/raw-order/context";
-import { stub } from "@/contexts/raw-order/data";
+import { OrderContext } from "@/contexts/order/context";
+import { stub } from "@/contexts/order/data";
 import { fetch } from "@/util/fetch";
 import { useMutation } from "@tanstack/react-query";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { ParsedMenuItem } from "schema";
+import { ParsedMenuItem, ParseOrderInput } from "schema";
 import { assert } from "shared/src/function";
-import { z } from "zod";
 
-export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
+export const OrderProvider = ({ children }: { children: ReactNode }) => {
     const [rawContent, setRawContent] = useState<string | undefined>(undefined);
     const didInitialExecutionRef = useRef(false);
 
@@ -19,10 +18,7 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
                 "/order/parse",
                 "post",
                 {
-                    input: z.object({
-                        rawContent: z.string(),
-                        refresh: z.boolean(),
-                    }),
+                    input: ParseOrderInput,
                     output: ParsedMenuItem.array(),
                 },
                 {
@@ -44,7 +40,7 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
         }
 
         if (!chrome.tabs) {
-            console.error("RawOrderProvider: chrome.tabs is not available");
+            console.error("OrderProvider: chrome.tabs is not available");
             return;
         }
 
@@ -81,7 +77,7 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
     }, [rawContent, mutate]);
 
     return (
-        <RawOrderContext.Provider
+        <OrderContext.Provider
             value={{
                 isParsedMenuItemsPending: isPending,
                 isParsedMenuItemsLoading: !isPending && !data,
@@ -91,6 +87,6 @@ export const RawOrderProvider = ({ children }: { children: ReactNode }) => {
             }}
         >
             {children}
-        </RawOrderContext.Provider>
+        </OrderContext.Provider>
     );
 };

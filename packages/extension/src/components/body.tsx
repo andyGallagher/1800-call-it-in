@@ -1,4 +1,4 @@
-import { useRawOrderContext } from "@/contexts/raw-order/hooks";
+import { useOrderContext } from "@/contexts/order/hooks";
 import { clsx } from "clsx";
 import { formatCentsToDollars } from "shared/src/format";
 import { assert } from "shared/src/function";
@@ -10,7 +10,7 @@ export const Body = () => {
         isParsedMenuItemsPending,
         menuItems,
         refreshParsedMenuItems,
-    } = useRawOrderContext();
+    } = useOrderContext();
 
     return (
         <div className={styles.body}>

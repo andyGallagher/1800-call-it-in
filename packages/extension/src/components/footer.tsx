@@ -1,4 +1,4 @@
-import { useRawOrderContext } from "@/contexts/raw-order/hooks";
+import { useOrderContext } from "@/contexts/order/hooks";
 import { clsx } from "clsx";
 import styles from "./footer.module.css";
 
@@ -34,7 +34,7 @@ const FooterInput = ({
 };
 
 export const Footer = () => {
-    const { menuItems } = useRawOrderContext();
+    const { menuItems } = useOrderContext();
 
     return (
         <div className={styles.footer}>
@@ -179,8 +179,14 @@ export const Footer = () => {
                     onChange={() => {}}
                 />
                 <FooterInput
-                    id="phone"
-                    label="Their Phone"
+                    id="your-phone"
+                    label="Your phone"
+                    value="(415) 983-0888"
+                    onChange={() => {}}
+                />
+                <FooterInput
+                    id="their-phone"
+                    label="Their phone"
                     value="(415) 983-0888"
                     onChange={() => {}}
                 />

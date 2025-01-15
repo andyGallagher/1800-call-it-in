@@ -87,7 +87,10 @@ model Order {
     totalCost  Float?
     pickupTime DateTime?
 
-    restaurantName        String
+    userName        String
+    userPhoneNumber String
+
+    restaurantName        String?
     restaurantPhoneNumber String
 
     menuItems     MenuItem[]

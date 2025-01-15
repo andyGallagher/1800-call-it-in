@@ -4,10 +4,9 @@ import { order } from "@/services/order";
 import { DEFAULT_TELEPHONY_PROVIDER, telephony } from "@/services/telephony";
 import { createHash } from "crypto";
 import { Hono } from "hono";
-import { CompleteOrder, PhoneNumber } from "schema";
+import { CreateOrderInput, ParseOrderInput, PhoneNumber } from "schema";
 import { unindented } from "shared/src/format";
 import { notImplemented } from "shared/src/function";
-import { z } from "zod";
 
 const hash = (str: string): string => {
     return createHash("md5").update(str).digest("hex");
@@ -20,7 +19,7 @@ orderRouter.get("/:id", (c) => {
 });
 
 orderRouter
-    .post("/", makeValidator(CompleteOrder.omit({ id: true })), async (c) => {
+    .post("/", makeValidator(CreateOrderInput), async (c) => {
         const rawOrder = c.req.valid("json");
 
         if (!rawOrder.menuItems.length) {
@@ -63,7 +62,7 @@ orderRouter
             template,
         );
 
-        await db.order.update({
+        const updatedOrder = await db.order.update({
             data: {
                 telephoneCall: {
                     create: {
@@ -78,7 +77,7 @@ orderRouter
             },
         });
 
-        return c.text("POST /endpoint");
+        return c.json(updatedOrder);
     })
     .put((c) => {
         return notImplemented();
@@ -87,35 +86,29 @@ orderRouter
         return notImplemented();
     });
 
-orderRouter.post(
-    "/parse",
-    makeValidator(
-        z.object({ rawContent: z.string(), refresh: z.boolean().optional() }),
-    ),
-    async (c) => {
-        const { rawContent, refresh } = c.req.valid("json");
+orderRouter.post("/parse", makeValidator(ParseOrderInput), async (c) => {
+    const { rawContent, refresh } = c.req.valid("json");
 
-        const cached = await db.rawOrder.findFirst({
-            where: {
-                inputHash: hash(rawContent),
-            },
-        });
+    const cached = await db.rawOrder.findFirst({
+        where: {
+            inputHash: hash(rawContent),
+        },
+    });
 
-        // This is not very typesafe, but it's fine for now.
-        if (refresh !== true && cached) {
-            return c.json(cached.outputData);
-        }
+    // This is not very typesafe, but it's fine for now.
+    if (refresh !== true && cached) {
+        return c.json(cached.outputData);
+    }
 
-        const menuItems = await order.parse.menuItems(rawContent);
+    const menuItems = await order.parse.menuItems(rawContent);
 
-        await db.rawOrder.create({
-            data: {
-                inputHash: hash(rawContent),
-                inputData: rawContent,
-                outputData: menuItems,
-            },
-        });
+    await db.rawOrder.create({
+        data: {
+            inputHash: hash(rawContent),
+            inputData: rawContent,
+            outputData: menuItems,
+        },
+    });
 
-        return c.json(menuItems);
-    },
-);
+    return c.json(menuItems);
+});
