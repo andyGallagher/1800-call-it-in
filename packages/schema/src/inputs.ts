@@ -4,16 +4,17 @@ import { z } from "zod";
 import { PhoneNumber } from "./util";
 
 export const CreateOrderInput = z.object({
-    menuItems: z.array(
+    parsedMenuItems: z.array(
         z.object({
             name: z.string(),
             quantity: z.number(),
             price: z.number().nullable(),
         }),
     ),
+
     userName: z.string(),
     userPhoneNumber: PhoneNumber,
-    restaurantName: z.string(),
+    restaurantName: z.string().optional(),
     restaurantPhoneNumber: PhoneNumber,
 });
 
