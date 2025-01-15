@@ -28,13 +28,13 @@ export const order = {
                     unindented`
                         I'm going to give you the innerText of an HTML document, which contains an order for food.
                         Please pick out the items of the food order.
-                        Items should consist of a name, quantity, and price.
+                        Items should consist of a name, quantity, and costPerItem.
                         Return the items in a JSON array.
     
                         Rules:
                         - If there are multiple items with the same name, combine them into one item.
-                        - If there is no price, set it to null.
-                        - Return the price as cents.
+                        - If there is no price, set costPerItem to null.
+                        - Return the costPerItem as cents.
     
                         {rawContent}
                     `,

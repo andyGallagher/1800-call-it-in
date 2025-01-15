@@ -90,12 +90,12 @@ export const Body = () => {
                                 <span>
                                     {menuItem.quantity} x {menuItem.name}
                                 </span>
-                                {menuItem.price !== null && (
+                                {menuItem.costPerItem !== null && (
                                     <>
                                         &nbsp;
                                         <span className={styles.bodyItemPrice}>
                                             (
-                                            {`${formatCentsToDollars(menuItem.price)}`}
+                                            {`${formatCentsToDollars(menuItem.costPerItem)}`}
                                             )
                                         </span>
                                     </>
@@ -121,7 +121,7 @@ export const Body = () => {
 
                             if (
                                 parsedMenuItems.some(
-                                    (item) => item.price === null,
+                                    (item) => item.costPerItem === null,
                                 )
                             ) {
                                 return "--";
@@ -130,10 +130,10 @@ export const Body = () => {
                             const total = parsedMenuItems?.reduce(
                                 (acc, next) => {
                                     assert(
-                                        next.price !== null,
+                                        next.costPerItem !== null,
                                         "price must be defined",
                                     );
-                                    return acc + next.price;
+                                    return acc + next.costPerItem;
                                 },
                                 0,
                             );

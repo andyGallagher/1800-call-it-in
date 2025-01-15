@@ -19,6 +19,11 @@ api.basePath("/api/v1/")
     .route("/health", healthRouter)
     .route("/order", orderRouter);
 
+console.info("Registered routes:");
+api.routes.forEach((route) => {
+    console.info(`${route.method} ${route.path}`);
+});
+
 serve({
     fetch: api.fetch,
     port: config("SERVER_PORT", (val) => parseInt(val)),

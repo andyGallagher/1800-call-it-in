@@ -1,16 +1,11 @@
 // # TODO => Generate hono router hooks if we make more than like... 7 of these.
 
 import { z } from "zod";
+import { ParsedMenuItem } from "./parser";
 import { PhoneNumber } from "./util";
 
 export const CreateOrderInput = z.object({
-    parsedMenuItems: z.array(
-        z.object({
-            name: z.string(),
-            quantity: z.number(),
-            price: z.number().nullable(),
-        }),
-    ),
+    parsedMenuItems: ParsedMenuItem.array(),
 
     userName: z.string(),
     userPhoneNumber: PhoneNumber,

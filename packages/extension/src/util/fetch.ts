@@ -51,9 +51,13 @@ const fetchWrapper = async <T, B>(
     }
 
     const data = await response.json();
-    const parsedData = schemas.output.parse(data);
+    const parsed = schemas.output.safeParse(data);
 
-    return parsedData;
+    if (!parsed.success) {
+        throw new Error("fetch: output validation failed");
+    }
+
+    return parsed.data;
 };
 
 export { fetchWrapper as fetch };
