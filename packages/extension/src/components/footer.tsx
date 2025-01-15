@@ -1,5 +1,6 @@
 import { useOrderContext } from "@/contexts/order/hooks";
 import { clsx } from "clsx";
+import { useState } from "react";
 import styles from "./footer.module.css";
 
 const FooterInput = ({
@@ -34,7 +35,16 @@ const FooterInput = ({
 };
 
 export const Footer = () => {
-    const { parsedMenuItems } = useOrderContext();
+    const { parsedMenuItems, placeOrder } = useOrderContext();
+    const [orderDetails, setOrderDetails] = useState({
+        userName: "Andrew Gallagher",
+        userPhoneNumber: "+15555555555",
+        restaurantPhoneNumber: "+15555555555",
+    });
+
+    const isDisabled =
+        parsedMenuItems?.length === 0 ||
+        !Object.values(orderDetails).every((value) => value);
 
     return (
         <div className={styles.footer}>
@@ -175,33 +185,57 @@ export const Footer = () => {
                 <FooterInput
                     id="name"
                     label="Your name"
-                    value="Andrew Gallagher"
-                    onChange={() => {}}
+                    value={orderDetails.userName}
+                    onChange={(userName) => {
+                        setOrderDetails((orderDetails) => ({
+                            ...orderDetails,
+                            userName,
+                        }));
+                    }}
                 />
+
                 <FooterInput
                     id="your-phone"
                     label="Your phone"
-                    value="(415) 983-0888"
-                    onChange={() => {}}
+                    value={orderDetails.userPhoneNumber}
+                    onChange={(userPhoneNumber) => {
+                        setOrderDetails((orderDetails) => ({
+                            ...orderDetails,
+                            userPhoneNumber,
+                        }));
+                    }}
                 />
+
                 <FooterInput
                     id="their-phone"
                     label="Their phone"
-                    value="(415) 983-0888"
-                    onChange={() => {}}
+                    value={orderDetails.restaurantPhoneNumber}
+                    onChange={(restaurantPhoneNumber) => {
+                        setOrderDetails((orderDetails) => ({
+                            ...orderDetails,
+                            restaurantPhoneNumber,
+                        }));
+                    }}
                 />
 
                 <button
-                    disabled={parsedMenuItems?.length === 0}
+                    disabled={isDisabled}
                     className={clsx(
                         styles.footerOrderButton,
-                        parsedMenuItems?.length === 0 && styles.disabled,
+                        isDisabled && styles.disabled,
                     )}
+                    onClick={() => {
+                        if (isDisabled) {
+                            return;
+                        }
+
+                        placeOrder(orderDetails);
+                    }}
                 >
                     <span
                         className={clsx(
                             styles.footerOrderButtonGlyph,
-                            parsedMenuItems?.length === 0 && styles.disabled,
+                            isDisabled && styles.disabled,
                         )}
                     >
                         <svg
