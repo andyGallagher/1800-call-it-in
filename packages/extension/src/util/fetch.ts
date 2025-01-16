@@ -47,17 +47,19 @@ const fetchWrapper = async <T, B>(
     const response = await fetch(url, options);
 
     if (!response.ok) {
+        console.error(`fetch: HTTP error: ${response.status}`);
         throw new Error(`fetch: HTTP error: ${response.status}`);
     }
 
     const data = await response.json();
-    const parsed = schemas.output.safeParse(data);
 
-    if (!parsed.success) {
+    try {
+        const parsed = schemas.output.parse(data);
+        return parsed;
+    } catch (e) {
+        console.error(e);
         throw new Error("fetch: output validation failed");
     }
-
-    return parsed.data;
 };
 
 export { fetchWrapper as fetch };
