@@ -118,6 +118,7 @@ orderRouter.post("/", makeValidator(CreateOrderInput), async (c) => {
         },
         include: {
             menuItems: true,
+            telephoneCall: true,
         },
     });
 
@@ -142,6 +143,10 @@ orderRouter.post("/", makeValidator(CreateOrderInput), async (c) => {
         },
         where: {
             id: dbOrder.id,
+        },
+        include: {
+            menuItems: true,
+            telephoneCall: true,
         },
     });
 
