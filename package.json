@@ -1,6 +1,6 @@
 {
     "private": true,
-    "name": "1-800-call-that-shit-in",
+    "name": "1-800-call-it-in",
     "scripts": {
         "dev": "pnpm run --recursive --if-present --filter=!notifications --parallel dev",
         "lint": "eslint --cache",

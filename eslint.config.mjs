@@ -33,7 +33,7 @@ export default tseslint.config(
     tseslint.configs.base,
 
     {
-        name: "1-800-call-that-shit-in/base",
+        name: "1-800-call-it-in/base",
 
         files: ["**/*.ts", "**/*.tsx", "**/*.mts", "**/*.cts"],
 

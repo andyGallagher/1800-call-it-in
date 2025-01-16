@@ -1,8 +1,8 @@
 {
     "manifest_version": 3,
-    "name": "1-800-call-that-shit-in",
+    "name": "1-800-call-it-in",
     "version": "0.0.0",
-    "description": "Cut out the middle man and just call that shit in",
+    "description": "Cut out the middle man and just call it in",
     "action": {
         "default_popup": "index.html"
     },
