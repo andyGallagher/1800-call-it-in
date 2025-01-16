@@ -1,7 +1,5 @@
 # 1-800-call-it-in ☎️
 
-### Why?
-
 This is an extension that you can sideload into Chrome for calling in orders to restaurants from Grubhub. Why? Because delivery apps often take something between 5-20% of an order as a fee for their service. Sometimes this fee is foisted onto you, the customer. Other times, restaurants just eat the cost. Everybody gets fucked — not great! This application side-steps the middle-man by using some very modern technology (LLMs for input, transcribing, and interpreting transcription; generative voice models) on some very old rails (the good ol' telephone).
 
 This is a pretty uninspired use case, and I'll probably just be leaving this one as is.
