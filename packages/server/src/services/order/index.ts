@@ -59,9 +59,10 @@ export const order = {
                         Return the total cost and pickup time as a JSON object, with keys of totalCost and pickupTime.
 
                         Rules:
+                        - Return the pickupTime as a date.
+                        - Return the totalCost as cents.
                         - If the total cost is not mentioned, set it to null.
                         - If the pickup time is not mentioned, set it to null.
-                        - Return the totalCost as cents.
     
                         {transcription}
                     `,

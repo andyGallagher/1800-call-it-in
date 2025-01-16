@@ -7,6 +7,6 @@ export const ParsedMenuItem = z.object({
 });
 
 export const ParsedTranscription = z.object({
-    pickupTime: z.string().nullable(),
+    pickupTime: z.date().nullable(),
     totalCost: z.number().nullable(),
 });

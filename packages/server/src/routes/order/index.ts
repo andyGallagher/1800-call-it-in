@@ -48,15 +48,6 @@ orderRouter.get("/:id", async (c) => {
             return c.json(dbOrder);
         }
 
-        await db.telephoneCall.update({
-            data: {
-                transcription: transcriptionOutput.transcription,
-            },
-            where: {
-                id: dbOrder.telephoneCall.id,
-            },
-        });
-
         const parsedTranscription = await order.parse.callTranscription(
             transcriptionOutput.transcription,
         );
@@ -65,6 +56,12 @@ orderRouter.get("/:id", async (c) => {
             data: {
                 pickupTime: parsedTranscription.pickupTime,
                 totalCost: parsedTranscription.totalCost,
+
+                telephoneCall: {
+                    update: {
+                        transcription: transcriptionOutput.transcription,
+                    },
+                },
             },
             where: {
                 id: id,
