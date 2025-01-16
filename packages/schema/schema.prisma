@@ -17,6 +17,7 @@ generator zod {
     provider      = "zod-prisma"
     output        = "./src/generated-zod-schemas" // (default) the directory where generated zod schemas will be saved
     relationModel = false
+    imports       = "./src/imports"
 }
 
 //##################################################################################################
@@ -39,7 +40,7 @@ model ApplicationVersion {
 
     /// Time the deploy finished, marks when the last pod successfully passed a health check.
     /// Defaults to the time the row was created in the DB.
-    deployedAt DateTime @default(now())
+    deployedAt DateTime @default(now()) /// @zod.custom(imports.StringOrDate)
 }
 
 /**
@@ -47,8 +48,8 @@ model ApplicationVersion {
  */
 model MenuItem {
     id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now()) /// @zod.custom(imports.StringOrDate)
+    updatedAt DateTime @updatedAt /// @zod.custom(imports.StringOrDate)
 
     name        String
     quantity    Int
@@ -64,8 +65,8 @@ model MenuItem {
  */
 model RawOrder {
     id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now()) /// @zod.custom(imports.StringOrDate)
+    updatedAt DateTime @updatedAt /// @zod.custom(imports.StringOrDate)
 
     inputHash String
 
@@ -80,12 +81,12 @@ model RawOrder {
  */
 model Order {
     id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now()) /// @zod.custom(imports.StringOrDate)
+    updatedAt DateTime @updatedAt /// @zod.custom(imports.StringOrDate)
 
     // Note that this may diverge from a summation of MenuItem due to restaurant policy.
     totalCost  Float?
-    pickupTime DateTime?
+    pickupTime DateTime? /// @zod.custom(imports.StringOrDate)
 
     userName        String
     userPhoneNumber String
@@ -102,8 +103,8 @@ model Order {
  */
 model TelephoneCall {
     id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime @default(now()) /// @zod.custom(imports.StringOrDate)
+    updatedAt DateTime @updatedAt /// @zod.custom(imports.StringOrDate)
 
     externalServiceType String @default("Vapi")
     externalServiceId   String
